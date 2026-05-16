@@ -1,0 +1,33 @@
+name: Basic Self-Hosted Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Show Runner Details
+        run: |
+          echo "Running on self-hosted runner"
+          hostname
+          whoami
+
+      - name: Show OS Info
+        run: |
+          uname -a
+
+      - name: List Files
+        run: |
+          ls -la
+
+      - name: Sample Build Step
+        run: |
+          echo "Build started..."
+          echo "Build completed successfully!"
