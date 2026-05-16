@@ -1,4 +1,4 @@
-name: Basic Self-Hosted Workflow
+name: Terraform Infrastructure Deployment
 
 on:
   push:
@@ -6,7 +6,8 @@ on:
       - main
 
 jobs:
-  terraform:
+  terraform-init:
+    name: Terraform Initialization
     runs-on: self-hosted
 
     env:
@@ -16,24 +17,71 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Azure Login
         run: |
           az login --service-principal --username $env:ARM_CLIENT_ID --password $env:ARM_CLIENT_SECRET --tenant $env:ARM_TENANT_ID
 
-      - name: Verify Azure Account
+      - name: Verify Azure Subscription
         run: az account show
 
-      - name: Terraform Init
+      - name: Terraform Initialize
         run: terraform init
+
+  terraform-validate:
+    name: Terraform Validation
+    runs-on: self-hosted
+    needs: terraform-init
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Terraform Validate
         run: terraform validate
 
+  terraform-plan:
+    name: Terraform Planning
+    runs-on: self-hosted
+    needs: terraform-validate
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Terraform Plan
         run: terraform plan
+
+  terraform-apply:
+    name: Terraform Deployment
+    runs-on: self-hosted
+    needs: terraform-plan
+
+    if: github.ref == 'refs/heads/main'
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
