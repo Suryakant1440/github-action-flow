@@ -6,26 +6,22 @@ on:
       - main
 
 jobs:
-  build:
+  terraform:
     runs-on: self-hosted
+
+    env:
+      ARM_CLIENT_ID: "10ec7e79-3893-49b8-aefc-5451bc1fffc1"
+      ARM_CLIENT_SECRET: "eae945d1-1aac-440f-ba9c-13fc18edfab3"
+      ARM_SUBSCRIPTION_ID: "5d297d85-ddad-4ac7-8baa-2ce25e3f0ce5"
+      ARM_TENANT_ID: "23caa587-9951-4fb9-8847-7bc506258a2d"
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Show Runner Details
+      - name: Azure Login
         run: |
-          echo "Running on self-hosted runner"
-          hostname
-          whoami
-
-
-
-      - name: List Files
-        run: |
-          ls -la
-
-      - name: Sample Build Step
-        run: |
-          echo "Build started..."
-          echo "Build completed successfully!"
+          az login --service-principal \
+            --username $ARM_CLIENT_ID \
+            --password $ARM_CLIENT_SECRET \
+            --tenant $ARM_TENANT_ID
