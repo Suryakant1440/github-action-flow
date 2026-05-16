@@ -19,9 +19,7 @@ jobs:
           hostname
           whoami
 
-      - name: Show OS Info
-        run: |
-          uname -a
+
 
       - name: List Files
         run: |
