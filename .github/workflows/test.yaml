@@ -6,6 +6,7 @@ on:
       - main
 
 jobs:
+
   terraform-init:
     name: Terraform Initialization
     runs-on: self-hosted
@@ -27,6 +28,9 @@ jobs:
       - name: Verify Azure Subscription
         run: az account show
 
+      - name: Terraform Version
+        run: terraform version
+
       - name: Terraform Initialize
         run: terraform init
 
@@ -44,6 +48,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Terraform Initialize
+        run: terraform init
 
       - name: Terraform Validate
         run: terraform validate
@@ -63,8 +70,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Terraform Initialize
+        run: terraform init
+
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -out=tfplan
+
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: tfplan
 
   terraform-apply:
     name: Terraform Deployment
@@ -83,5 +99,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Terraform Initialize
+        run: terraform init
+
+      - name: Download Terraform Plan
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-plan
+
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve tfplan
