@@ -1,0 +1,14 @@
+on:
+  push:
+    branches:
+      - main
+jobs:
+  terraform_init:
+    runs-on: self-hosted
+    steps:
+      - name: Terraform init/plan
+        uses: comu2e/tfnotify-composite-action@1.0.4
+        with:
+          # Setup terraform
+          name: # optional
+        
