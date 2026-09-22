@@ -32,7 +32,6 @@ jobs:
   terraform_apply:
     runs-on: self-hosted
     needs: terraform_init
-    if: ${{ needs.terraform_init.result == success()}}
     environment: prod
     steps:
        - uses: Qonfused/checkout@4.2.2
