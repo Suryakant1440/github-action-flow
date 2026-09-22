@@ -11,8 +11,10 @@ jobs:
       steps:
         - uses: Qonfused/checkout@4.2.2
 
-        - name: terraform_init
-          run: terraform init
+        - name: Terraform Init
+          run: terraform init -upgrade
+          working-directory: ./todo-ui
+
 
         - name: Azure Login
           uses: Azure/login@v3.0.2
