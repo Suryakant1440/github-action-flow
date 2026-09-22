@@ -1,6 +1,6 @@
 name: Terraform_workflow
 
-on: workflow_dispatch
+on: push
 permissions:
  contents: read
  id-token: write
