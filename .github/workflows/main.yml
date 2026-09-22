@@ -20,7 +20,4 @@ jobs:
             client-id: "c5fb60c4-d9e7-444c-b210-5b030036fb7b"
             tenant-id: "95318efb-83b7-46ef-883c-ba496fd97053"
             subscription-id: "419df3c6-e8dd-4035-b096-c692fe3e62a8"
-
-    # The type of authentication. Supported values are SERVICE_PRINCIPAL, IDENTITY. Default value is SERVICE_PRINCIPAL
-    auth-type: # optional, default is SERVICE_PRINCIPAL
            
