@@ -1,14 +1,17 @@
-on:
-  push:
-    branches:
-      - main
+name: Terraform_workflow
+
+on: workflow_dispatch
+
 jobs:
   terraform_init:
-    runs-on: self-hosted
-    steps:
-      - name: Terraform init/plan
-        uses: comu2e/tfnotify-composite-action@1.0.4
-        with:
-          # Setup terraform
-          name: # optional
-        
+    - name: terraform_init
+      runs-on: self-hosted
+      steps:
+        - name: Checkout-388
+          # You may pin to the exact commit or the version.
+          # uses: Qonfused/checkout@ef23884d4741c3aea52577aaaf81a3849aeeac05
+           uses: Qonfused/checkout@4.2.2
+
+        - name: terraform init
+          run: terraform init
+           
