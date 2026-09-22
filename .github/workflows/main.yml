@@ -32,7 +32,7 @@ jobs:
   terraform_apply:
     runs-on: self-hosted
     needs: terraform_init
-    environment: prod
+
     steps:
        - uses: Qonfused/checkout@4.2.2
 
