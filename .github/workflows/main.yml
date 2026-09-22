@@ -6,7 +6,7 @@ permissions:
  id-token: write
  
 jobs:
-  terraform_init:
+  terraform_init1:
       runs-on: self-hosted
       steps:
         - uses: Qonfused/checkout@4.2.2
