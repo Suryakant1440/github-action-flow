@@ -6,7 +6,7 @@ permissions:
  id-token: write
  
 jobs:
-  terraform_init2:
+  terraform_init:
       runs-on: self-hosted
       steps:
         - uses: Qonfused/checkout@4.2.2
@@ -26,8 +26,8 @@ jobs:
           working-directory: ./todo-ui
   terraform_apply:
     runs-on: self-hosted
-    needs: terraform_init2
-    if: ${{ needs.terraform_init2.result == success()}}
+    needs: terraform_init
+    if: ${{ needs.terraform_init.result == success()}}
     environment: prod
     steps:
        - uses: Qonfused/checkout@4.2.2
